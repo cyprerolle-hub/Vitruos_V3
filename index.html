@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtuos - Le Serious Game RSE & ACV</title>
+    
+    <!-- Google Fonts: Poppins pour le côté moderne/tech -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuration Tailwind pour la palette personnalisée -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        virtuos: {
+                            dark: '#0a0a0a', // Fond très sombre
+                            card: '#171717', // Fond des cartes
+                            lime: '#a3e635', // Vert vibrant (Accent)
+                            dim: '#84cc16',  // Vert légèrement plus sombre pour hover
+                            text: '#f3f4f6', // Blanc cassé
+                            muted: '#9ca3af' // Gris pour sous-titres
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')",
+                        'moss-texture': "url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')",
+                        'noise': "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMWExYTFhIi8+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMzMzMiLz4KPC9zdmc+')"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Styles personnalisés pour les effets avancés */
+        body {
+            background-color: #0a0a0a;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-header {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animations au scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #a3e635);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Smooth rounded corners for images */
+        .super-rounded {
+            border-radius: 2rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a3e635; 
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-virtuos-lime selection:text-virtuos-dark">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 glass-header top-0 left-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-widest text-white flex items-center gap-2">
+                <i class="fa-solid fa-leaf text-virtuos-lime"></i> VIRTUOS
+            </a>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#jeu" class="hover:text-virtuos-lime transition-colors">Le Jeu</a>
+                <a href="#expertise" class="hover:text-virtuos-lime transition-colors">Expertise</a>
+                <a href="#team" class="hover:text-virtuos-lime transition-colors">L'Équipe</a>
+                <a href="#contact" class="px-5 py-2 rounded-full border border-virtuos-lime text-virtuos-lime hover:bg-virtuos-lime hover:text-virtuos-dark transition-all duration-300">
+                    Nous contacter
+                </a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1637957330206-382a3928e08d?q=80&w=2600&auto=format&fit=crop" 
+                 alt="Texture sombre nature" 
+                 class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-b from-virtuos-dark via-virtuos-dark/90 to-virtuos-dark"></div>
+        </div>
+
+        <div class="container mx-auto px-6 z-10 grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Text Content -->
+            <div class="space-y-6 reveal">
+                <div class="inline-block px-3 py-1 rounded-full border border-virtuos-lime/30 bg-virtuos-lime/10 text-virtuos-lime text-xs font-semibold tracking-wide mb-2">
+                    SERIOUS GAME RSE & ACV
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                    Pilotez la <br>
+                    <span class="text-gradient">durabilité</span> de demain.
+                </h1>
+                <p class="text-lg text-virtuos-muted max-w-lg leading-relaxed">
+                    Le serious game ultime pour maîtriser l'Analyse du Cycle de Vie et le management responsable. Équilibrez performance économique et impact sur 18 tours stratégiques.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="#contact" class="bg-virtuos-lime text-virtuos-dark font-bold py-4 px-8 rounded-full shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:shadow-[0_0_30px_rgba(163,230,53,0.5)] hover:scale-105 transition-all duration-300 text-center">
+                        Demander un devis
+                    </a>
+                    <a href="#jeu" class="glass text-white font-medium py-4 px-8 rounded-full hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play text-xs"></i> Découvrir le jeu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Visual Mockup -->
+            <div class="relative reveal delay-200">
+                <div class="absolute -inset-4 bg-virtuos-lime/20 blur-3xl rounded-full opacity-30"></div>
+                <div class="relative glass p-4 super-rounded transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1611996575743-065af6442b67?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Plateau de jeu Virtuos" 
+                         class="w-full h-auto rounded-3xl shadow-2xl opacity-90 border border-white/10">
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -left-6 glass p-4 rounded-2xl flex items-center gap-3 animate-bounce shadow-lg" style="animation-duration: 3s;">
+                        <div class="bg-green-500/20 p-2 rounded-full text-green-400">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase">Score Durabilité</p>
+                            <p class="text-xl font-bold text-white">98/100</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-gray-500">
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <!-- SECTION: EXPERTISE & NORMES -->
+    <section id="expertise" class="py-24 bg-virtuos-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center reveal">
+                <div>
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-6">L'excellence technique au service de la pédagogie.</h2>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Virtuos ne se contente pas de simuler. Il forme sur des bases réelles. Notre moteur de jeu intègre rigoureusement les méthodologies reconnues pour assurer une transposabilité immédiate en entreprise.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                            <div class="bg-blue-500/10 p-3 rounded-lg text-blue-400">
+                                <i class="fa-solid fa-file-contract text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">Conforme ISO 14040 & 14044</h3>
+                                <p class="text-sm text-gray-500">Respect strict des cadres normatifs de l'Analyse du Cycle de Vie.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                            <div class="bg-virtuos-lime/10 p-3 rounded-lg text-virtuos-lime">
+                                <i class="fa-solid fa-book-open text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">Basé sur l'ADEME</h3>
+                                <p class="text-sm text-gray-500">Données et facteurs d'impact issus de la documentation officielle.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Abstract visual of standards -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center text-center h-40">
+                        <i class="fa-solid fa-recycle text-4xl text-virtuos-lime mb-2"></i>
+                        <span class="font-bold text-gray-300">ACV</span>
+                    </div>
+                    <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center text-center h-40 mt-8">
+                        <i class="fa-solid fa-globe text-4xl text-blue-400 mb-2"></i>
+                        <span class="font-bold text-gray-300">ISO</span>
+                    </div>
+                    <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center text-center h-40">
+                        <i class="fa-solid fa-scale-balanced text-4xl text-purple-400 mb-2"></i>
+                        <span class="font-bold text-gray-300">RSE</span>
+                    </div>
+                    <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center text-center h-40 mt-8">
+                        <i class="fa-solid fa-seedling text-4xl text-green-500 mb-2"></i>
+                        <span class="font-bold text-gray-300">ADEME</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: LE JEU (MÉCANIQUES) -->
+    <section id="jeu" class="py-24 relative overflow-hidden">
+        <!-- Background texture moss -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2813&auto=format&fit=crop" class="w-full h-full object-cover opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-t from-virtuos-dark via-transparent to-virtuos-dark"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-3xl lg:text-5xl font-bold mb-4">Maîtrisez les <span class="text-virtuos-lime">3 Piliers</span></h2>
+                <p class="text-gray-400">
+                    Sur 18 tours de jeu intenses, chaque décision compte. Vous devez maintenir l'équilibre précaire entre rentabilité, écologie et bien-être social à travers les 6 phases du cycle de vie de vos produits.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass p-8 rounded-3xl hover:border-virtuos-lime/50 transition-all duration-300 group reveal">
+                    <div class="w-14 h-14 bg-yellow-500/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-coins text-2xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Économique</h3>
+                    <p class="text-sm text-gray-400">Gérez votre trésorerie, investissez en R&D et assurez la pérennité financière de l'entreprise face au marché.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass p-8 rounded-3xl border-virtuos-lime/30 hover:border-virtuos-lime transition-all duration-300 group reveal delay-100">
+                    <div class="w-14 h-14 bg-virtuos-lime/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-tree text-2xl text-virtuos-lime"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Environnemental</h3>
+                    <p class="text-sm text-gray-400">Réduisez l'empreinte carbone. De l'extraction des matières premières à la fin de vie (recyclage).</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass p-8 rounded-3xl hover:border-virtuos-lime/50 transition-all duration-300 group reveal delay-200">
+                    <div class="w-14 h-14 bg-pink-500/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users text-2xl text-pink-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Social</h3>
+                    <p class="text-sm text-gray-400">Conditions de travail, éthique des fournisseurs et impact sociétal. La responsabilité ne s'arrête pas aux portes de l'usine.</p>
+                </div>
+            </div>
+
+            <!-- Lifecycle strip -->
+            <div class="mt-20 reveal">
+                <p class="text-center text-xs font-bold tracking-widest text-gray-500 uppercase mb-8">Les 6 Phases du Cycle de Vie</p>
+                <div class="flex flex-wrap justify-center gap-4 lg:gap-8 opacity-70">
+                    <span class="px-4 py-2 border border-gray-700 rounded-full text-sm">Extraction</span>
+                    <i class="fa-solid fa-arrow-right text-gray-700 self-center hidden md:block"></i>
+                    <span class="px-4 py-2 border border-gray-700 rounded-full text-sm">Fabrication</span>
+                    <i class="fa-solid fa-arrow-right text-gray-700 self-center hidden md:block"></i>
+                    <span class="px-4 py-2 border border-gray-700 rounded-full text-sm">Transport</span>
+                    <i class="fa-solid fa-arrow-right text-gray-700 self-center hidden md:block"></i>
+                    <span class="px-4 py-2 border border-gray-700 rounded-full text-sm">Usage</span>
+                    <i class="fa-solid fa-arrow-right text-gray-700 self-center hidden md:block"></i>
+                    <span class="px-4 py-2 border border-gray-700 rounded-full text-sm">Fin de vie</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: L'ÉQUIPE -->
+    <section id="team" class="py-24 bg-virtuos-card">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 text-center reveal">L'équipe derrière <span class="text-virtuos-lime">Virtuos</span></h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Member 1 -->
+                <div class="text-center reveal">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-2 border-virtuos-lime p-1">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded-full filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Marc Dubois</h3>
+                    <p class="text-virtuos-lime text-sm mb-2">Expert RSE & Fondateur</p>
+                    <p class="text-gray-500 text-sm px-4">15 ans d'expérience dans l'audit environnemental auprès des grands groupes industriels.</p>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="text-center reveal delay-100">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-2 border-gray-700 p-1">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded-full filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Sophie Lambert</h3>
+                    <p class="text-virtuos-lime text-sm mb-2">Lead Game Designer</p>
+                    <p class="text-gray-500 text-sm px-4">Spécialiste de la ludification des processus complexes d'apprentissage.</p>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="text-center reveal delay-200">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-2 border-gray-700 p-1">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover rounded-full filter grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Thomas Chen</h3>
+                    <p class="text-virtuos-lime text-sm mb-2">Consultant ACV</p>
+                    <p class="text-gray-500 text-sm px-4">Ingénieur environnement, garant de la conformité scientifique des algorithmes du jeu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: CTA / DOWNLOAD -->
+    <section id="contact" class="py-24 relative flex items-center justify-center">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=2641&auto=format&fit=crop" class="w-full h-full object-cover brightness-[0.2]">
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 w-full max-w-4xl reveal">
+            <div class="glass rounded-3xl p-8 md:p-12 text-center border border-virtuos-lime/20 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Prêt à former vos équipes ?</h2>
+                <p class="text-gray-300 text-lg mb-10 max-w-2xl mx-auto">
+                    Transformez la formation RSE en une expérience engageante et mémorable. Téléchargez les règles détaillées ou contactez-nous pour une démo.
+                </p>
+                
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                    <button class="bg-virtuos-lime text-virtuos-dark font-bold py-4 px-8 rounded-full shadow-lg hover:bg-white hover:scale-105 transition-all w-full md:w-auto">
+                        Faire un devis pour une formation
+                    </button>
+                    
+                    <button class="flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 hover:bg-white/10 transition-all text-white w-full md:w-auto justify-center group">
+                        <i class="fa-solid fa-file-pdf text-red-400 group-hover:scale-110 transition-transform"></i>
+                        <span>Télécharger les règles (PDF)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-12 border-t border-gray-800">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-leaf text-virtuos-lime text-xl"></i>
+                <span class="text-xl font-bold tracking-widest text-white">VIRTUOS</span>
+            </div>
+            
+            <div class="text-sm text-gray-500">
+                &copy; 2024 Virtuos Game. Tous droits réservés.
+            </div>
+
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT JS -->
+    <script>
+        // Gestion de l'animation au scroll (Intersection Observer)
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Animation joue une seule fois
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(el => revealOnScroll.observe(el));
+        });
+
+        // Effet de navbar au scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.style.background = 'rgba(10, 10, 10, 0.9)';
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.style.background = 'rgba(10, 10, 10, 0.5)';
+            }
+        });
+    </script>
+</body>
+</html>
